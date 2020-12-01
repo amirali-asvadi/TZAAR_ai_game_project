@@ -10,6 +10,7 @@ public class Main {
         Game game = new Game(whitePlayer, blackPlayer);
         Player player = game.play();
         System.out.println(player.getType());
+        System.out.println(game.toJson(player));
     }
 
 }

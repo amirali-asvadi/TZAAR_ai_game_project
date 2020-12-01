@@ -36,4 +36,15 @@ public class Action {
                 ", target=" + target +
                 '}';
     }
+
+    public String toJson(){
+        if(this.type != ActionType.nothing){
+            return "{\"type\":\"" + this.type.toString() +
+                    "\",\"start\":{\"row\":" + this.start.row + ",\"col\":" + this.start.col + "}" +
+                    ",\"target\":{\"row\":" + this.target.row + ",\"col\":" + this.target.col + "}" +
+                    "}";
+        } else {
+            return "{\"type\":\"" + this.type.toString() + "\"}";
+        }
+    }
 }

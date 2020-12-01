@@ -1,5 +1,8 @@
 package models;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import static models.Board.isTherePath;
 
 public class Game {
@@ -8,10 +11,13 @@ public class Game {
     private final Player black;
     private final Board board;
 
+    private ArrayList<Action> actions;
+
     public Game(Player whitePlayer, Player blackPlayer) {
         this.white = whitePlayer;
         this.black = blackPlayer;
         this.board = new Board(black, white);
+        actions = new ArrayList<Action>();
     }
 
     public Game(Player white, Player black, Board board) {
@@ -101,15 +107,27 @@ public class Game {
                 if (bead != null) {
                     if (bead.getPlayer().getType() == PlayerType.white) {
                         switch (bead.getType()) {
-                            case Tzaars -> oneWhite = true;
-                            case Tzarras -> twoWhite = true;
-                            case Totts -> threeWhite = true;
+                            case Tzaars:
+                                oneWhite = true;
+                                break;
+                            case Tzarras:
+                                twoWhite = true;
+                                break;
+                            case Totts:
+                                threeWhite = true;
+                                break;
                         }
                     } else {
                         switch (bead.getType()) {
-                            case Tzaars -> oneBlack = true;
-                            case Tzarras -> twoBlack = true;
-                            case Totts -> threeBlack = true;
+                            case Tzaars:
+                                oneBlack = true;
+                                break;
+                            case Tzarras:
+                                twoBlack = true;
+                                break;
+                            case Totts:
+                                threeBlack = true;
+                                break;
                         }
                     }
                 }
@@ -125,6 +143,7 @@ public class Game {
     }
 
     private boolean applyAction(Player player, Action action, boolean attack) {
+        addActionToList(action);
         System.out.println(action);
         if (attack) {
             if (action.getType() != Action.ActionType.attack) {
@@ -213,6 +232,26 @@ public class Game {
             return false;
         } else
             return true;
+    }
+
+    private void addActionToList(Action action){
+        if(actions != null)
+            actions.add(action);
+    }
+
+    public String toJson(Player winner){
+        String json = "{" +
+                "\"winner\":\"" + winner.getType() + "\"," +
+                "\"actions\":[";
+        System.out.println("------GAME JSON------");
+        for(int i=0;i<actions.size();i++){
+            if(i == 0)
+                json += (actions.get(i).toJson());
+            else
+                json += (","+actions.get(i).toJson());
+        }
+        json += "]}";
+        return json;
     }
 
     public Game copy() {

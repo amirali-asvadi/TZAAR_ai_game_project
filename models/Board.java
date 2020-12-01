@@ -80,14 +80,21 @@ public class Board {
         right, left, topRight, topLeft, downRight, downLeft;
 
         public NeighborType reverse() {
-            return switch (this) {
-                case right -> left;
-                case left -> right;
-                case topRight -> downLeft;
-                case topLeft -> downRight;
-                case downRight -> topLeft;
-                case downLeft -> topRight;
+            switch (this) {
+                case right:
+                    return left;
+                case left:
+                    return right;
+                case topRight:
+                    return downLeft;
+                case topLeft:
+                    return downRight;
+                case downRight:
+                    return topLeft;
+                case downLeft:
+                    return topRight;
             };
+            return null;
         }
 
     }
@@ -313,9 +320,14 @@ public class Board {
                 continue;
             }
             switch (bead.getType()) {
-                case Tzaars -> System.out.print("A ");
-                case Tzarras -> System.out.print("B ");
-                case Totts -> System.out.print("C ");
+                case Tzaars:
+                    System.out.print("A ");
+                    break;
+                case Tzarras:
+                    System.out.print("B ");
+                    break;
+                case Totts:
+                    System.out.print("C ");
             }
 
         }
@@ -354,9 +366,9 @@ public class Board {
         return rows;
     }
 
-    static boolean isTherePath(Board.BoardCell start, Board.BoardCell target) {
-        for (Board.NeighborType type : start.neighbors.keySet()) {
-            Board.BoardCell cell = start.neighbors.get(type);
+    static boolean isTherePath(BoardCell start, BoardCell target) {
+        for (NeighborType type : start.neighbors.keySet()) {
+            BoardCell cell = start.neighbors.get(type);
             while (cell != null && cell.bead == null) {
                 cell = cell.neighbors.get(type);
             }
